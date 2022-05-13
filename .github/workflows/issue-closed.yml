@@ -51,7 +51,7 @@ jobs:
         uses: actions-ecosystem/action-create-issue@v1
         with:
           github_token: ${{ secrets.PROJECT_TOKEN }}
-          title: "[Implementation] ${{ steps.feature.outputs.title }}"
+          title: "[Testing] ${{ steps.feature.outputs.title }}"
           body: |
             Feature : ${{ steps.feature.outputs.title }} #${{ steps.feature.outputs.number }}
             - [ ] L2s
