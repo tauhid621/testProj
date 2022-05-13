@@ -12,7 +12,7 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'feature')
         uses: actions-ecosystem/action-create-issue@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PROJECT_TOKEN }}
           title: "[Design] ${{ github.event.issue.title }}"
           body: |
             ${{ github.event.issue.title }}
