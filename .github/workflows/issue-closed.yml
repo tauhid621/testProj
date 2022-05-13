@@ -1,0 +1,56 @@
+name: "Issue closed"
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  issue-closed:
+    name: issue closed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Feature title
+        id: feature
+        run: |
+          firstline=`echo "${{ github.event.issue.body }}" | head -1`
+          title=`echo $firstline | cut -d " " -f 3`
+          number=`echo $firstline | cut -d " " -f 4`
+          echo "::set-output name=title::$title"
+          echo "::set-output name=number::$number"
+          
+      - name : Create Implementation Issue
+        if: contains(github.event.issue.labels.*.name, 'design')
+        uses: actions-ecosystem/action-create-issue@v1
+        with:
+          github_token: ${{ secrets.PROJECT_TOKEN }}
+          title: "[Implementation] ${{ steps.feature.outputs.title }}"
+          body: |
+            Feature : ${{ steps.feature.outputs.title }} ${{ steps.feature.outputs.number }}
+            - [ ] Code
+            - [ ] Push
+          labels: |
+            implement
+          assignees: ${{ github.event.issue.assignee.login }}
+          
+      - name : Create Security Issue
+        if: contains(github.event.issue.labels.*.name, 'design')
+        uses: actions-ecosystem/action-create-issue@v1
+        with:
+          github_token: ${{ secrets.PROJECT_TOKEN }}
+          title: "[Security] ${{ steps.feature.outputs.title }}"
+          body: |
+            Feature : ${{ steps.feature.outputs.title }} ${{ steps.feature.outputs.number }}
+            - [ ] Container Scan
+            - [ ] Code Scan
+          labels: |
+            security
+          assignees: ${{ github.event.issue.assignee.login }}
+          
+      - name: Create comment on feature issue
+        if: contains(github.event.issue.labels.*.name, 'design')
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          token: ${{ secrets.PROJECT_TOKEN }}
+          body: |
+            Implementation issue created.
+            Security issue created.
