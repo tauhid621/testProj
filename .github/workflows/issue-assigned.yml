@@ -1,0 +1,25 @@
+name: "Issue assigned"
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  issue-assigned:
+    name: issue assigned
+    runs-on: ubuntu-latest
+    steps:
+      - name : Create Design Issue
+        if: contains(github.event.issue.labels.*.name, 'feature')
+        uses: actions-ecosystem/action-create-issue@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          title: "[Design] ${{ github.event.issue.title }}"
+          body: |
+            ${{ github.event.issue.title }}
+
+            - [ ] Have a meeting with UX team
+            - [ ] Check the dashboard
+
+          labels: |
+            design
+          assignees: ${{ github.event.issue.assignee.login }}
