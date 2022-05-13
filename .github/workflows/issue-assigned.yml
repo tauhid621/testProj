@@ -15,7 +15,7 @@ jobs:
           github_token: ${{ secrets.PROJECT_TOKEN }}
           title: "[Design] ${{ github.event.issue.title }}"
           body: |
-            ${{ github.event.issue.title }}
+            Feature : ${{ github.event.issue.title }} #${{ github.event.issue.number }}
 
             - [ ] Have a meeting with UX team
             - [ ] Check the dashboard
@@ -23,3 +23,13 @@ jobs:
           labels: |
             design
           assignees: ${{ github.event.issue.assignee.login }}
+          
+      - name: Create comment on feature issue
+        if: success()
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          token: ${{ secrets.PROJECT_TOKEN }}
+          body: |
+            Design issue created.
+        
