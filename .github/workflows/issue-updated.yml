@@ -1,0 +1,14 @@
+name: "Issue updated"
+on:
+  issues:
+#     types: [opened, labeled]
+    types: [edited]
+
+jobs:
+  issue-edited:
+    name: issue edited
+    runs-on: ubuntu-latest
+    steps:
+      - name : Check
+        shell: bash
+        run : echo "issue updated"
