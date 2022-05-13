@@ -25,7 +25,7 @@ jobs:
           assignees: ${{ github.event.issue.assignee.login }}
           
       - name: Create comment on feature issue
-        if: success()
+        if: contains(github.event.issue.labels.*.name, 'feature')
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.issue.number }}
