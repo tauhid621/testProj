@@ -13,7 +13,7 @@ jobs:
         run: |
           firstline=`echo "${{ github.event.issue.body }}" | head -1`
           title=`echo $firstline | cut -d " " -f 3`
-          number=`echo $firstline | cut -d " " -f 4`
+          number=`echo $firstline | cut -d " " -f 4 | cut -c2-`
           echo "::set-output name=title::$title"
           echo "::set-output name=number::$number"
           
@@ -24,7 +24,7 @@ jobs:
           github_token: ${{ secrets.PROJECT_TOKEN }}
           title: "[Implementation] ${{ steps.feature.outputs.title }}"
           body: |
-            Feature : ${{ steps.feature.outputs.title }} ${{ steps.feature.outputs.number }}
+            Feature : ${{ steps.feature.outputs.title }} #${{ steps.feature.outputs.number }}
             - [ ] Code
             - [ ] Push
           labels: |
@@ -38,7 +38,7 @@ jobs:
           github_token: ${{ secrets.PROJECT_TOKEN }}
           title: "[Security] ${{ steps.feature.outputs.title }}"
           body: |
-            Feature : ${{ steps.feature.outputs.title }} ${{ steps.feature.outputs.number }}
+            Feature : ${{ steps.feature.outputs.title }} #${{ steps.feature.outputs.number }}
             - [ ] Container Scan
             - [ ] Code Scan
           labels: |
@@ -49,7 +49,7 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'design')
         uses: peter-evans/create-or-update-comment@v2
         with:
-          issue-number: ${{ github.event.issue.number }}
+          issue-number: ${{ steps.feature.outputs.number }}
           token: ${{ secrets.PROJECT_TOKEN }}
           body: |
             Implementation issue created.
