@@ -11,4 +11,4 @@ jobs:
     steps:
       - name : Check
         shell: bash
-        run : echo "issue updated"
+        run : echo github.event.issue
