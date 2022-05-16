@@ -1,17 +1,14 @@
 name: "Issue to Project memex board"
 on:
   issues:
-#     types: [opened, labeled]
     types: [opened]
 
 jobs:
   add-to-project:
     name: Add issue to project
-    if: ${{ secrets.AUTOMATION }} == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@main
-#         if: contains(github.event.issue.labels.*.name, 'platform')
         with:
-          project-url: https://github.com/users/tauhid621/projects/1
+          project-url: ${{ secrets.PROJECT_URL }}
           github-token: ${{ secrets.PROJECT_TOKEN }}
