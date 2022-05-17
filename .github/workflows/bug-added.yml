@@ -28,3 +28,11 @@ jobs:
         with:
           github_token: ${{ secrets.PROJECT_TOKEN }}
           assignees: ${{ steps.codeowner.outputs.codeowner }}
+          
+#       - name: Send message to Slack API
+#         uses: archive/github-actions-slack@v2.0.0
+#         id: notify
+#         with:
+#           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+#           slack-channel: CPPUV5KU0
+#           slack-text: Hello! A new bug is created in "${{ github.repository }}"
