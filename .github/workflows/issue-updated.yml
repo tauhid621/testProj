@@ -17,6 +17,7 @@ jobs:
         id : codeowner
         shell: bash
         run : |
-          codeowner=$(cut -d' ' -f1 bug-owner.txt)
+          ls
+          codeowner=$(cut -d' ' -f1 ./bug-owner.txt)
           echo "::set-output name=codeowner::$codeowner"
       
