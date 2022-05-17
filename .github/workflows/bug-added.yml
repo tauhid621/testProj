@@ -9,7 +9,22 @@ jobs:
     if: contains(github.event.issue.title, 'bug')
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      
+      - name : Get codeowner
+        id : codeowner
+        shell: bash
+        run : |
+          ls
+          codeowner=$(cut -d' ' -f1 ./bug-owner.txt)
+          echo "::set-output name=codeowner::$codeowner"
+          
       - uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.PROJECT_TOKEN }}
           labels: bug
+          
+      - uses: actions-ecosystem/action-add-assignees@v1
+        with:
+          github_token: ${{ secrets.PROJECT_TOKEN }}
+          assignees: ${{ steps.codeowner.outputs.codeowner }}
