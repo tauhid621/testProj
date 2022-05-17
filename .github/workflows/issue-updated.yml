@@ -9,6 +9,14 @@ jobs:
     name: issue edited
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name : Check
         shell: bash
         run : echo "Issue title ${{ github.event.issue.body }}"
+      - name : Get codeowner
+        id : codeowner
+        shell: bash
+        run : |
+          codeowner=$(cut -d' ' -f1 bug-owner.txt)
+          echo "::set-output name=codeowner::$codeowner"
+      
